@@ -38,33 +38,38 @@ def main():
     # Show the welcome message
     show_version()
     
-    # Select the folder containing the input files, like '/home/kimariyb/sabreML/data'
-    input_folder = input('Please input the folder containing the input files: ')
-    input_files = get_input_files(input_folder)
-    if not input_files:
-        print('No input files found. Please check the folder path.')
-        exit()
-
-    # Define the commands to be run for each output file, like 'commands.txt'
-    commands_file = input('Please input the file containing the commands: ')
-    commands = parse_commands(commands_file)
-    if not commands:
-        print('No commands found. Please check the file path.')
-        exit()
-
     # Run the batch run function
     # Calculate the wave function for each output file using the commands specified in commands.txt
     # Ask the user if they want to run the batch run Mulitwfn or not
-    if input('Do you want to run the batch run Mulitwfn? (y/n): ') == 'y':
-        output_files, cdft_files = batch_run(wave_files=input_files, commands=commands)
+    model = input('Do you want to run the batch run Mulitwfn? (y/n): ')
+    if model == 'y':
+        # Select the folder containing the input files, like '/home/kimariyb/sabreML/data'
+        input_folder = input('Please input the folder containing the input files: ')
+        input_files = get_input_files(input_folder)
+        if not input_files:
+            print('No input files found. Please check the folder path.')
+            exit()
+
+        # Define the commands to be run for each output file, like 'commands.txt'
+        commands_file = input('Please input the file containing the commands: ')
+        commands = parse_commands(commands_file)
+        if not commands:
+            print('No commands found. Please check the file path.')
+            exit()
+        
+        batch_run(wave_files=input_files, commands=commands)
         # move the output files (*.txt) to the output folder
         move_files('./data', './output', 'txt')
-    elif input('Do you want to run the batch run Mulitwfn? (y/n): ') == 'n':
+        output_files, cdft_files = get_output_files('./output')
+        
+    elif model == 'n':
         output_folder = input('Please input the folder containing the output and CDFT files: ')
         output_files, cdft_files = get_output_files(output_folder)
+        
     else:
         print('Invalid input. Please input "y" or "n".')
         exit()
+    
         
     # Analyze the output files and generate the final results
     results_list = []

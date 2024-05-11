@@ -21,7 +21,7 @@ For details, see the LICENSE file.
 import re
 import numpy as np
 
-from utils import read_contents
+from helper.utils import read_contents
 
 class Molecule:
     """

@@ -108,7 +108,7 @@ def batch_run(wave_files, commands):
 
     # check if there are any wave function files
     assert files_number > 0, "No wave function files provided !"
-    print(f'Total {files_number} wave function files to run!')
+    print(f'Total {files_number} wave function files to run!\n')
     print(f'Running Multiwfn for {files_number} wave function files...')
 
     # run Multiwfn for each wave function file
@@ -124,6 +124,9 @@ def batch_run(wave_files, commands):
         cdft_file = os.path.splitext(wave_file)[0] + "-CDFT.txt"
         os.rename("CDFT.txt", cdft_file)
         cdft_files.append(cdft_file)
+        
+        # print completion message
+        print(f'Multiwfn for {wave_file} completed !')
 
     return output_files, cdft_files
 
