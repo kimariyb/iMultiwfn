@@ -20,7 +20,6 @@ For details, see the LICENSE file.
 
 import re
 import numpy as np
-import pandas as pd
 
 from utils import read_contents
 
@@ -57,37 +56,6 @@ class Molecule:
     def from_dict(cls, d):
         return cls(name=d['name'], atoms=d['atoms'], charges=d['charges'])
 
-    @staticmethod
-    def exports_data(datas: pd.DataFrame):
-        """
-        Save the data to a csv file.
-
-        Parameters
-        ----------
-        datas : pd.DataFrame
-            A DataFrame containing the name, atoms, and charges of the molecules.
-        """
-        charge_names = [
-            'Hirshfeld_charge',
-            'ADCH_charge',
-            'spin_population',
-            'electron_density',
-            'Laplacian_electron_density',
-            'kinetic_energy_density'
-        ]
-
-        for i in range(datas.shape[0]):
-            charge_list = [datas.iloc[i][charge_names[0]].atoms, datas.iloc[i][charge_names[0]].charges,
-                           datas.iloc[i][charge_names[1]].charges, datas.iloc[i][charge_names[2]].charges,
-                           datas.iloc[i][charge_names[3]].charges, datas.iloc[i][charge_names[4]].charges,
-                           datas.iloc[i][charge_names[5]].charges]
-
-            charge_data = pd.DataFrame(charge_list)
-
-            # convert x axis with y axis
-            charge_data = charge_data.T
-
-            charge_data.to_excel(f"charges_{i + 1}.xlsx")
 
 
 def _read_charge(charge_lines, charge_type):

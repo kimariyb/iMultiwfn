@@ -58,7 +58,7 @@ def main():
     if input('Do you want to run the batch run Mulitwfn? (y/n): ') == 'y':
         output_files, cdft_files = batch_run(wave_files=input_files, commands=commands)
         # move the output files (*.txt) to the output folder
-        move_files('/home/kimariyb/sabreML/data', '/home/kimariyb/sabreML/output', 'txt')
+        move_files('./data', './output', 'txt')
     elif input('Do you want to run the batch run Mulitwfn? (y/n): ') == 'n':
         output_folder = input('Please input the folder containing the output and CDFT files: ')
         output_files, cdft_files = get_output_files(output_folder)
@@ -72,9 +72,11 @@ def main():
         result = get_descriptors(cdft_file=cdft_file, other_file=output_file)
         results_list.append(result)
         
-    
     # remove rubbish files
     remove_files('./', 'wfn')
+    
+    # Generate the final report and present the results to the user
+    exports_data(results_list)
 
     # End the timer
     end_time = get_current_time()

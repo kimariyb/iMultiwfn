@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-helper.py
+run.py
 
-This module contains helper functions for Multiwfn.
+This module contains run-related functions for Multiwfn.
 
 @author:
 Kimariyb, Hsiun Ryan (kimariyb@163.com)

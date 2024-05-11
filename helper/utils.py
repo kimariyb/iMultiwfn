@@ -21,6 +21,44 @@ For details, see the LICENSE file.
 import os
 import glob
 
+import pandas as pd
+
+
+def exports_data(datas: pd.DataFrame):
+    """
+    Save the data to a csv file.
+
+    Parameters
+    ----------
+    datas : pd.DataFrame
+        A DataFrame containing the name, atoms, and charges of the molecules.
+    """
+    # Export descriptors data
+    datas.to_excel("results.xlsx", index=False)
+    
+    # Export charge data
+    charge_names = [
+        'Hirshfeld_charge',
+        'ADCH_charge',
+        'spin_population',
+        'electron_density',
+        'Laplacian_electron_density',
+        'kinetic_energy_density'
+    ]
+
+    for i in range(datas.shape[0]):
+        charge_list = [datas.iloc[i][charge_names[0]].atoms, datas.iloc[i][charge_names[0]].charges,
+                        datas.iloc[i][charge_names[1]].charges, datas.iloc[i][charge_names[2]].charges,
+                        datas.iloc[i][charge_names[3]].charges, datas.iloc[i][charge_names[4]].charges,
+                        datas.iloc[i][charge_names[5]].charges]
+
+        charge_data = pd.DataFrame(charge_list)
+
+        # convert x axis with y axis
+        charge_data = charge_data.T
+
+        charge_data.to_excel(f"charges_{i + 1}.xlsx")
+
 
 def move_files(source_dir, target_dir, extension='txt'):
     """
