@@ -35,6 +35,8 @@ def exports_data(datas: pd.DataFrame):
     """
     # Export descriptors data
     datas.to_excel("results.xlsx", index=False)
+
+    print(datas)
     
     # Export charge data
     charge_names = [

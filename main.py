@@ -24,6 +24,7 @@ For details, see the LICENSE file.
 @data:
 2024-05-11
 """
+import pandas as pd
 
 from display.version import *
 
@@ -31,13 +32,14 @@ from helper.utils import *
 from helper.run import *
 from helper.descriptors import *
 
+
 def main():
     # Start the timer
     start_time = get_current_time()
-    
+
     # Show the welcome message
     show_version()
-    
+
     # Run the batch run function
     # Calculate the wave function for each output file using the commands specified in commands.txt
     # Ask the user if they want to run the batch run Mulitwfn or not
@@ -56,30 +58,33 @@ def main():
         if not commands:
             print('No commands found. Please check the file path.')
             exit()
-        
+
         batch_run(wave_files=input_files, commands=commands)
         # move the output files (*.txt) to the output folder
         move_files('./data', './output', 'txt')
-        output_files, cdft_files = get_output_files('./output')
-        
+        cdft_files, output_files = get_output_files('./output')
+
     elif model == 'n':
         output_folder = input('Please input the folder containing the output and CDFT files: ')
-        output_files, cdft_files = get_output_files(output_folder)
-        
+        cdft_files, output_files = get_output_files(output_folder)
+
     else:
         print('Invalid input. Please input "y" or "n".')
         exit()
-    
-        
+
+    print(output_files, cdft_files)
+
     # Analyze the output files and generate the final results
     results_list = []
     for output_file, cdft_file in zip(output_files, cdft_files):
         result = get_descriptors(cdft_file=cdft_file, other_file=output_file)
         results_list.append(result)
-        
+
     # remove rubbish files
     remove_files('./', 'wfn')
-    
+
+    results_list = pd.DataFrame(results_list)
+
     # Generate the final report and present the results to the user
     exports_data(results_list)
 
@@ -91,7 +96,6 @@ def main():
     print("SabreML running time: ", get_running_time(start_time, end_time))
     print(f"SabreML finished at: {get_current_date()}. Copyright (c) 2024-2025 Kimariyb.")
 
-    
-    
+
 if __name__ == '__main__':
     main()

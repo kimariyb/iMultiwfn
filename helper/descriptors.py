@@ -23,6 +23,7 @@ import numpy as np
 
 from helper.utils import read_contents
 
+
 class Molecule:
     """
     A class to store molecule.
@@ -55,7 +56,6 @@ class Molecule:
     @classmethod
     def from_dict(cls, d):
         return cls(name=d['name'], atoms=d['atoms'], charges=d['charges'])
-
 
 
 def _read_charge(charge_lines, charge_type):
@@ -193,7 +193,6 @@ def _get_other_descriptors(contents):
         'surface_area': None,
         'volume': None,
         'sphericity': None,
-        'ovality': None,  # TODO: Check if this is correct.
         'dipole_moment': None,
         'MPI': None,
         'ESP_min': None,
@@ -360,13 +359,6 @@ def _get_other_descriptors(contents):
                 kinetic_energy_density_lines = lines[start_idx: end_idx]
                 descriptors['kinetic_energy_density'] = _read_fuzzy(kinetic_energy_density_lines,
                                                                     'kinetic_energy_density')
-
-    # calculate the ovality
-    if 'volume' in descriptors and 'surface_area' in descriptors:
-        descriptors['ovality'] = (
-                descriptors['surface_area'] / (
-                4.0 * np.pi * ((3.0 * descriptors['volume'] / (4.0 * np.pi))
-                               ** (2.0 / 3.0))))
 
     return descriptors
 
